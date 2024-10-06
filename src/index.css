@@ -540,3 +540,6 @@ video {
   cursor: pointer;
 }
 
+.bookmark-active .delete-button {
+  display: none; /* Hide the delete button when in the bookmark tab */
+}

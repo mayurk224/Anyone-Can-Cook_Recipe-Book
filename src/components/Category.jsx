@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate to handle navigation
 
 const Category = () => {
   const [mealTypes, setMealTypes] = useState([]);
   const [mealTypeImages, setMealTypeImages] = useState({});
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
   useEffect(() => {
     const fetchMealTypes = async () => {
@@ -31,6 +33,11 @@ const Category = () => {
 
     fetchMealTypes();
   }, []);
+
+  const handleCategoryClick = (mealType) => {
+    navigate(`/recipes?mealType=${mealType}`); // Navigate to AllRecipes page with the mealType query param
+  };
+
   return (
     <div className="mt-8">
       <div className="flex items-center">
@@ -43,6 +50,7 @@ const Category = () => {
           <div
             key={index}
             className="flex flex-col items-center p-8 gap-3 shadow-md rounded-lg hover:scale-105 transition-all ease-in-out cursor-pointer"
+            onClick={() => handleCategoryClick(mealType)} // Navigate on click
           >
             <div className="">
               <img

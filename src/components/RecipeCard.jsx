@@ -43,10 +43,10 @@ const RecipeCard = ({
         className={`favorite-button ${isFavorite ? "favorited" : ""}`}
         onClick={(e) => {
           e.stopPropagation(); // Prevent triggering navigation on button click
-          onToggleFavorite(recipe.id);
+          onToggleFavorite(recipe.id); // Correctly handle toggle favorite
         }}
       >
-        {isFavorite ? "❤️" : "♡"} Favorite
+        {isFavorite ? "❤️" : "🤍"} Favorite
       </button>
 
       {/* Conditionally render delete button only on /profile page */}
@@ -54,8 +54,8 @@ const RecipeCard = ({
         <button
           className="delete-button"
           onClick={(e) => {
-            e.stopPropagation(); // Prevent triggering navigation on button click
-            onDelete(recipe.id);
+            e.stopPropagation(); // Prevent navigation
+            onDelete(recipe.id); // Correctly handle delete
           }}
         >
           🗑️ Delete

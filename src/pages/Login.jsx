@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { login } from "../firebase/auth"; // Importing login function from auth.js
+import { login } from "../firebase/auth"; // Importing login function from auth.js
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/HeaderLogo.png";
 import Video from "../assets/LoginPage.mp4";
@@ -11,19 +11,20 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  //   const handleLogin = async (e) => {
-  //     e.preventDefault();
-  //     setError("");
-  //     setLoading(true); // Clear error message before attempt
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true); // Clear error message before attempt
 
-  //     try {
-  //       await login(email, password); // Call login function from auth.js
-  //       navigate("/"); // Redirect to home page on successful login
-  //     } catch (error) {
-  //       setError("Failed to login. Please check your credentials.");
-  //       console.error("Login Error:", error);
-  //     }
-  //   };
+    try {
+      await login(email, password); // Call login function from auth.js
+      navigate("/"); // Redirect to home page on successful login
+      alert('login successful');
+    } catch (error) {
+      setError("Failed to login. Please check your credentials.");
+      console.error("Login Error:", error);
+    }
+  };
 
   return (
     <div
@@ -57,7 +58,7 @@ const Login = () => {
                   </p>
                   <form
                     class="space-y-3 mt-4"
-                    //    onSubmit={handleLogin}
+                       onSubmit={handleLogin}
                   >
                     <div>
                       <label

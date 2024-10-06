@@ -1,0 +1,16 @@
+.featured-recipes-container {
+    padding: 20px;
+  }
+  
+  .featured-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .featured-recipes-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
