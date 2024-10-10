@@ -20,42 +20,53 @@ const RecipeCard = ({
   const cardClass = `recipe-card ${size}`;
 
   return (
-    <div className={cardClass} onClick={handleCardClick}>
+    <div
+      className="flex flex-col items-center p-6 bg-white shadow-md rounded-lg transition-transform duration-300 ease-in-out hover:scale-105 w-full max-w-xs sm:max-w-sm mx-auto"
+      onClick={handleCardClick}
+    >
       <img
         src={recipe.image || "https://via.placeholder.com/150"}
         alt={recipe.name}
-        className="recipe-image"
+        className="w-full h-48 object-cover rounded-lg mb-4"
       />
-      <h2>{recipe.name}</h2>
-      <p>{recipe.mealType}</p>
-      <p>
+
+      {/* Truncated Recipe Name */}
+      <h2 className="text-xl font-semibold text-center mb-2 truncate w-full">
+        {recipe.name}
+      </h2>
+
+      <p className="text-gray-600">{recipe.mealType.join(", ")}</p>
+
+      <p className="text-gray-800">
         <strong>Servings:</strong> {recipe.servings}
       </p>
-      <p>
-        <strong>Prep Time:</strong> {recipe.prepTimeMinutes} mins
+      <p className="text-gray-800">
+        <strong>Cuisine:</strong> {recipe.cuisine}
       </p>
-      <p>
+      <p className="text-gray-800 mb-4">
         <strong>Cook Time:</strong> {recipe.cookTimeMinutes} mins
       </p>
 
       {/* Favorite Button */}
       <button
-        className={`favorite-button ${isFavorite ? "favorited" : ""}`}
+        className={`bg-red-200 hover:bg-red-400 text-red-600 font-bold py-2 px-4 rounded-full ${
+          isFavorite ? "bg-red-400 text-white" : ""
+        }`}
         onClick={(e) => {
-          e.stopPropagation(); // Prevent triggering navigation on button click
-          onToggleFavorite(recipe.id); // Correctly handle toggle favorite
+          e.stopPropagation();
+          onToggleFavorite(recipe.id);
         }}
       >
-        {isFavorite ? "❤️" : "🤍"} Favorite
+        {isFavorite ? "❤️ Favorited" : "🤍 Favorite"}
       </button>
 
-      {/* Conditionally render delete button only on /profile page */}
+      {/* Delete Button - only visible on the profile page */}
       {location.pathname === "/profile" && (
         <button
-          className="delete-button"
+          className="bg-red-500 text-white font-bold py-2 px-4 rounded-full mt-3"
           onClick={(e) => {
-            e.stopPropagation(); // Prevent navigation
-            onDelete(recipe.id); // Correctly handle delete
+            e.stopPropagation();
+            onDelete(recipe.id);
           }}
         >
           🗑️ Delete

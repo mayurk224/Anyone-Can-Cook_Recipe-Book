@@ -179,37 +179,41 @@ const Profile = () => {
   };
 
   return (
-    <div className="mx-24">
+    <div className="mx-4 md:mx-10 lg:mx-24">
       <Header />
-      <div className="container mt-24">
+      <div className="container mt-10 md:mt-24">
         <DynamicBreadcrumb />
-        <div className="profileSection flex rounded-xl bg-slate-500 w-full p-5 justify-between mt-8 ">
-          <div className="gap-10 flex items-center">
+        <div className="profileSection flex flex-col lg:flex-row rounded-xl bg-slate-500 w-full p-5 justify-between mt-8">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
             <div>
               <img
                 src="https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt="Profile"
-                className="rounded-full h-40 w-40 object-cover"
+                className="rounded-full h-32 w-32 md:h-40 md:w-40 object-cover"
               />
             </div>
-            <div className="space-y-1">
-              <h1 className="text-4xl font-semibold">Mayur Kamble</h1>
-              <h3 className="font-medium text-lg">mayurkamble0250@gmail.com</h3>
-              <p className="text-base">Joined At: 2022-01-01</p>
+            <div className="space-y-1 text-center md:text-left">
+              <h1 className="text-3xl md:text-4xl font-semibold">
+                Mayur Kamble
+              </h1>
+              <h3 className="font-medium text-base md:text-lg">
+                mayurkamble0250@gmail.com
+              </h3>
+              <p className="text-sm md:text-base">Joined At: 2022-01-01</p>
             </div>
           </div>
-          <div className="flex items-center gap-14 pr-20">
-            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-40">
-              <h2 className="text-2xl">Followers</h2>
-              <h2 className="text-2xl">20</h2>
+          <div className="flex justify-center lg:justify-end gap-8 mt-6 lg:mt-0">
+            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-28 md:w-40">
+              <h2 className="text-xl md:text-2xl">Followers</h2>
+              <h2 className="text-xl md:text-2xl">20</h2>
             </div>
-            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-40">
-              <h2 className="text-2xl">Following</h2>
-              <h2 className="text-2xl">20</h2>
+            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-28 md:w-40">
+              <h2 className="text-xl md:text-2xl">Following</h2>
+              <h2 className="text-xl md:text-2xl">20</h2>
             </div>
-            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-40">
-              <h2 className="text-2xl">Posts</h2>
-              <h2 className="text-2xl">20</h2>
+            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-28 md:w-40">
+              <h2 className="text-xl md:text-2xl">Posts</h2>
+              <h2 className="text-xl md:text-2xl">20</h2>
             </div>
           </div>
         </div>
@@ -217,10 +221,10 @@ const Profile = () => {
         <div className="mt-10">
           <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul
-              className="flex flex-wrap -mb-px text-sm font-medium text-center"
+              className="flex flex-wrap text-sm font-medium text-center"
               role="tablist"
             >
-              <li className="me-2" role="presentation">
+              <li className="mr-2" role="presentation">
                 <button
                   className={`inline-block p-4 border-b-2 rounded-t-lg ${
                     activeTab === "myRecipe"
@@ -234,7 +238,7 @@ const Profile = () => {
                   My Recipes
                 </button>
               </li>
-              <li className="me-2" role="presentation">
+              <li className="mr-2" role="presentation">
                 <button
                   className={`inline-block p-4 border-b-2 rounded-t-lg ${
                     activeTab === "bookmark"
@@ -268,7 +272,7 @@ const Profile = () => {
           <div className="tab-content">
             {activeTab === "myRecipe" && (
               <div>
-                <div className="grid grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {recipes.map((recipe) => (
                     <RecipeCard
                       key={recipe.id}
@@ -282,23 +286,21 @@ const Profile = () => {
               </div>
             )}
 
-            <div className={activeTab === "bookmark" ? "bookmark-active" : ""}>
-              {activeTab === "bookmark" && (
-                <div>
-                  <div className="grid grid-cols-4 gap-8">
-                    {favoriteRecipes.map((recipe) => (
-                      <RecipeCard
-                        key={recipe.id}
-                        recipe={recipe}
-                        onDeleteRecipe={handleDeleteRecipe}
-                        isFavorite={favorites.includes(recipe.id)}
-                        onToggleFavorite={handleToggleFavorite}
-                      />
-                    ))}
-                  </div>
+            {activeTab === "bookmark" && (
+              <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {favoriteRecipes.map((recipe) => (
+                    <RecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      onDeleteRecipe={handleDeleteRecipe}
+                      isFavorite={favorites.includes(recipe.id)}
+                      onToggleFavorite={handleToggleFavorite}
+                    />
+                  ))}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {activeTab === "following" && <div>Following recipes</div>}
           </div>

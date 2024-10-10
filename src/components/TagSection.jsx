@@ -49,14 +49,14 @@ const TagSection = () => {
   const displayedTags = showAllTags ? tags : tags.slice(0, 20);
 
   return (
-    <div className="tag-section">
-      <h2 className="text-lg font-bold mb-4">Tags</h2>
+    <div className="tag-section px-4 sm:px-6 lg:px-8 my-8">
+      <h2 className="text-md sm:text-lg font-bold mb-4">Tags</h2>
       <div className="flex flex-wrap gap-2">
         {displayedTags.map((tag, index) => (
           <span
             key={index}
-            className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm cursor-pointer"
-            onClick={() => handleTagClick(tag)} // Trigger navigation on tag click
+            className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-xs sm:text-sm cursor-pointer transition-all hover:bg-blue-300"
+            onClick={() => handleTagClick(tag)}
           >
             {tag}
           </span>
@@ -68,7 +68,7 @@ const TagSection = () => {
         <div className="mt-4">
           <button
             onClick={toggleShowAllTags}
-            className="bg-gray-200 text-gray-800 px-4 py-2 rounded"
+            className="bg-gray-200 text-gray-800 px-4 py-2 text-xs sm:text-sm rounded transition-all hover:bg-gray-300"
           >
             {showAllTags ? "View Less" : "View More"}
           </button>

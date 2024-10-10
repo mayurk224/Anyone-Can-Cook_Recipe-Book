@@ -73,23 +73,33 @@ const Header = ({ onSearch }) => {
     onSearch(e.target.value); // Pass the search query to parent component for filtering
   };
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <header className="mb-[85px]">
+    <header className="mb-[105px]">
       <nav className="bg-[#fdf1f1] dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
         <div
           className={`max-w-screen-xl flex flex-wrap items-center ${
             isProfileRoute ? "justify-center" : "justify-between"
           } mx-auto p-4`}
         >
+          {/* Logo */}
           <a
             href="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
             <img src={Logo} className="h-12" alt="Logo" />
           </a>
-          <div className="flex md:order-2">
-            {currentUser && !isProfileRoute ? ( // Hide dropdown in profile route
-              <div className="flex items-center space-x-3 md:space-x-0 rtl:space-x-reverse md:ml-3">
+
+          {/* Profile Dropdown Button */}
+          <div className="flex items-center md:order-2 relative md:ml-3">
+            {currentUser && !isProfileRoute ? (
+              <div className="flex items-center space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <button
                   type="button"
                   className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -109,7 +119,7 @@ const Header = ({ onSearch }) => {
                   ref={dropdownRef}
                   className={`${
                     isDropdownOpen ? "block" : "hidden"
-                  } absolute top-14 right-16 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
+                  } absolute top-[60px] right-0 w-48 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 md:w-48`}
                 >
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">
@@ -158,7 +168,32 @@ const Header = ({ onSearch }) => {
             ) : null}
           </div>
 
-          <div className="flex items-center justify-between w-full md:w-auto md:order-1">
+          {/* Hamburger menu for mobile */}
+          <div className="md:hidden flex items-center ml-3">
+            <button
+              type="button"
+              className="text-gray-500 dark:text-gray-400 focus:outline-none"
+              onClick={toggleMobileMenu}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {/* Links and Search Bar */}
+          <div className="hidden md:flex items-center justify-between w-full md:w-auto md:order-1">
             {!isAddRecipeRoute && isRecipesRoute && !isProfileRoute ? (
               <input
                 type="text"
@@ -168,7 +203,7 @@ const Header = ({ onSearch }) => {
                 className="p-2 border border-gray-300 rounded-lg w-full md:w-auto"
               />
             ) : !isAddRecipeRoute && !isProfileRoute ? (
-              <ul className="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg bg-[#fdf1f1] md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-[#fdf1f1] dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <ul className="flex flex-col md:flex-row p-4 mt-4 font-medium border border-gray-100 rounded-lg bg-[#fdf1f1] md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-[#fdf1f1] dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                   <a
                     href="/"
@@ -212,6 +247,42 @@ const Header = ({ onSearch }) => {
               </ul>
             ) : null}
           </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden flex flex-col space-y-2 p-4 bg-gray-100 dark:bg-gray-800 absolute top-[70px] left-0 right-0 z-40">
+              <a
+                href="/"
+                className="block py-2 px-3 text-gray-900 dark:text-white"
+              >
+                Home
+              </a>
+              <a
+                href="/categories"
+                className="block py-2 px-3 text-gray-900 dark:text-white"
+              >
+                Category
+              </a>
+              <Link
+                to="/recipes"
+                className="block py-2 px-3 text-gray-900 dark:text-white"
+              >
+                All Recipes
+              </Link>
+              <Link
+                to="/aboutUs"
+                className="block py-2 px-3 text-gray-900 dark:text-white"
+              >
+                About
+              </Link>
+              <Link
+                to="/contactUs"
+                className="block py-2 px-3 text-gray-900 dark:text-white"
+              >
+                Contact Us
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
     </header>

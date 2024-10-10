@@ -134,12 +134,15 @@ const AddRecipe = () => {
       <Header />
 
       <DynamicBreadcrumb />
-      <form className="mx-20 flex" onSubmit={handleSubmit}>
-        <div className="recipeGeneralInfo w-[40%]">
-          <h1 className="text-2xl font-semibold text-gray-500">
+      <form
+        className="lg:mx-20 sm:mx-10 flex max-md:flex-col max-md:gap-5"
+        onSubmit={handleSubmit}
+      >
+        <div className="recipeGeneralInfo w-[40%] max-md:w-full">
+          <h1 className="text-2xl font-semibold text-gray-500 max-md:ml-10">
             Recipe General Information
           </h1>
-          <div className="p-10 space-y-5">
+          <div className="lg:p-10 sm:p-5 max-sm:mx-10 space-y-5">
             <div className="flex items-center justify-center">
               <label
                 htmlFor="dropzone-file"
@@ -379,11 +382,11 @@ const AddRecipe = () => {
             </div>
           </div>
         </div>
-        <div className="recipeDetails w-[60%]">
-          <h1 className="text-2xl font-semibold text-gray-500 cursor-default">
+        <div className="recipeDetails w-[60%] max-md:w-full">
+          <h1 className="text-2xl font-semibold text-gray-500 cursor-default max-md:ml-10">
             Recipe Details
           </h1>
-          <div className="p-5 space-y-5">
+          <div className="lg:p-10 sm:p-5 max-sm:mx-10 space-y-5">
             <div>
               <label
                 htmlFor="ingredients"

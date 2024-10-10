@@ -157,12 +157,15 @@ const AllRecipes = () => {
   }
 
   return (
-    <div className="all-recipes-page">
+    <div className="all-recipes-page px-4 sm:px-6 lg:px-8 my-8">
       <Header onSearch={handleSearch} />
-      <h1>All Recipes</h1>
+
+      <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6">
+        All Recipes
+      </h1>
 
       <div className="recipe-container">
-        <div className="recipe-grid">
+        <div className="recipe-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredRecipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
