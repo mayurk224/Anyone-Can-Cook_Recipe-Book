@@ -12,27 +12,27 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  //   const handleRegister = async (e) => {
-  //     e.preventDefault();
-  //     setError(""); // Clear any previous errors
+     const handleRegister = async (e) => {
+       e.preventDefault();
+      setError(""); // Clear any previous errors
 
-  //     if (password !== confirmPassword) {
-  //       setError("Passwords do not match.");
-  //       return;
-  //     }
+      if (password !== confirmPassword) {
+        setError("Passwords do not match.");
+        return;
+      }
 
-  //     setLoading(true); // Set loading state
+      setLoading(true); // Set loading state
 
-  //     try {
-  //       await register(email, password, displayName); // Pass displayName to the register function
-  //       navigate("/"); // Redirect to home page after successful registration
-  //     } catch (error) {
-  //       setError("Failed to create account. Please try again.");
-  //       console.error("Registration Error:", error);
-  //     } finally {
-  //       setLoading(false); // Stop loading
-  //     }
-  //   };
+      try {
+         await register(email, password, displayName); // Pass displayName to the register function
+        navigate("/"); // Redirect to home page after successful registration
+      } catch (error) {
+        setError("Failed to create account. Please try again.");
+        console.error("Registration Error:", error);
+     } finally {
+       setLoading(false); // Stop loading
+     }
+    };
 
   return (
     // <div className="register-container">
@@ -91,7 +91,7 @@ const Register = () => {
           <h1 className="text-3xl font-title text-center mb-6">
             Create an Account
           </h1>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleRegister} >
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-1">
                 Full Name
@@ -99,6 +99,9 @@ const Register = () => {
               <input
                 id="name"
                 type="text"
+                id="displayName"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
                 className="w-full p-3 border border-neutral-300 rounded-md focus:ring focus:ring-primary outline-none"
                 placeholder="John Doe"
               />
@@ -111,6 +114,8 @@ const Register = () => {
               <input
                 id="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-3 border border-neutral-300 rounded-md focus:ring focus:ring-primary outline-none"
                 placeholder="you@example.com"
               />
@@ -126,6 +131,8 @@ const Register = () => {
               <input
                 id="password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-3 border border-neutral-300 rounded-md focus:ring focus:ring-primary outline-none"
                 placeholder="••••••••"
               />
@@ -139,8 +146,10 @@ const Register = () => {
                 Confirm Password
               </label>
               <input
-                id="confirm-password"
                 type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full p-3 border border-neutral-300 rounded-md focus:ring focus:ring-primary outline-none"
                 placeholder="••••••••"
               />
@@ -150,7 +159,7 @@ const Register = () => {
               type="submit"
               className="w-full py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark"
             >
-              Sign Up
+              {loading ? "Creating Account..." : "Register"}
             </button>
           </form>
 
