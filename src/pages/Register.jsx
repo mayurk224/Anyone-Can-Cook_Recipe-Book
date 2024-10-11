@@ -49,7 +49,7 @@ const Register = () => {
       <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
           href="/"
-          class="flex items-center justify-center  text-2xl font-semibold text-gray-900 dark:text-white w-[450px] max-[425px]:w-[380px] bg-white"
+          class="flex items-center justify-center  text-2xl font-semibold text-gray-900 dark:text-white bg-white"
         >
           <img class="h-20" src={Logo} alt="logo" />
         </a>
