@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../assets/HeaderLogo.png";
 import { useAuth } from "../context/AuthContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
 
 const Header = ({ onSearch }) => {
   const { currentUser, logout } = useAuth();
@@ -86,6 +88,30 @@ const Header = ({ onSearch }) => {
     setMenuOpen((prev) => !prev);
   };
 
+  const [displayName, setDisplayName] = useState(""); // Store user's display name
+
+  // Fetch user's displayName from Firestore
+  useEffect(() => {
+    const fetchDisplayName = async () => {
+      if (!currentUser) return; // Ensure user is logged in
+
+      try {
+        const userDocRef = doc(db, "users", currentUser.uid); // Reference to user doc
+        const userDoc = await getDoc(userDocRef); // Get user document
+
+        if (userDoc.exists()) {
+          setDisplayName(userDoc.data().displayName || "No Name Provided");
+        } else {
+          console.log("User document not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching displayName:", error);
+      }
+    };
+
+    fetchDisplayName();
+  }, [currentUser]);
+
   return (
     <header className="mb-24">
       <nav class="bg-[#fdf1f1] dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -122,7 +148,7 @@ const Header = ({ onSearch }) => {
                 >
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">
-                      {currentUser.displayName}
+                      {displayName ? displayName : "Loading..."}
                     </span>
                     <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
                       {currentUser.email}
