@@ -42,7 +42,7 @@ const Category = () => {
     <div className="mt-8">
       {/* Title */}
       <div className="flex items-center justify-center">
-        <h1 className="text-3xl md:text-4xl cursor-default font-semibold text-center p-3">
+        <h1 className="text-3xl md:text-4xl cursor-default font-semibold text-center py-10">
           Categories
         </h1>
       </div>

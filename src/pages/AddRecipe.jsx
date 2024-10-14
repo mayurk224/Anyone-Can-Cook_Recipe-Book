@@ -133,13 +133,15 @@ const AddRecipe = () => {
     <div>
       <Header />
 
-      <DynamicBreadcrumb />
+      <div className="max-md:ml-5 max-md:my-5">
+        <DynamicBreadcrumb />
+      </div>
       <form
         className="lg:mx-20 sm:mx-10 flex max-md:flex-col max-md:gap-5"
         onSubmit={handleSubmit}
       >
         <div className="recipeGeneralInfo w-[40%] max-md:w-full">
-          <h1 className="text-2xl font-semibold text-gray-500 max-md:ml-10">
+          <h1 className="text-2xl font-semibold text-gray-500 max-md:ml-10 max-md:mb-3">
             Recipe General Information
           </h1>
           <div className="lg:p-10 sm:p-5 max-sm:mx-10 space-y-5">
@@ -383,7 +385,7 @@ const AddRecipe = () => {
           </div>
         </div>
         <div className="recipeDetails w-[60%] max-md:w-full">
-          <h1 className="text-2xl font-semibold text-gray-500 cursor-default max-md:ml-10">
+          <h1 className="text-2xl font-semibold text-gray-500 cursor-default max-md:ml-10 max-md:mb-3">
             Recipe Details
           </h1>
           <div className="lg:p-10 sm:p-5 max-sm:mx-10 space-y-5">
@@ -427,7 +429,7 @@ const AddRecipe = () => {
 
             <div className="flex justify-center items-center">
               <button
-                className="mt-10 flex bg-black text-white px-5 py-2 rounded-full"
+                className="mt-10 max-md:my-5 flex bg-black text-white px-5 py-2 rounded-full"
                 type="submit"
               >
                 <svg

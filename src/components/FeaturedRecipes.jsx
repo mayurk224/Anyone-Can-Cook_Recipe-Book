@@ -116,7 +116,9 @@ const FeaturedRecipe = () => {
 
   return (
     <div className="featured-recipes-container">
-      <h2 className="featured-title">Featured Recipes</h2>
+      <h2 className="featured-title py-10 font-semibold text-4xl">
+        Featured Recipes
+      </h2>
       <div className="featured-recipes-grid">
         {recipes.map((recipe) => (
           <RecipeCard
