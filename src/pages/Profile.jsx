@@ -18,6 +18,8 @@ import RecipeCard from "../components/RecipeCard";
 import { useAuth } from "../context/AuthContext";
 import { deleteObject, ref, listAll } from "firebase/storage";
 import axios from "axios"; // Import Axios for API calls
+import { onAuthStateChanged } from "firebase/auth";
+import Spinner from "../components/Spinner";
 
 const Profile = () => {
   const [recipes, setRecipes] = useState([]);
@@ -183,29 +185,27 @@ const Profile = () => {
   const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = auth.currentUser; // Get current authenticated user
-
-        if (user) {
-          const userDoc = await getDoc(doc(db, "users", user.uid)); // Fetch user data from Firestore
-
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid)); // Fetch user data
           if (userDoc.exists()) {
             setUserData(userDoc.data()); // Store fetched data
           } else {
-            throw new Error("User data not found.");
+            setError("User data not found.");
           }
-        } else {
-          throw new Error("No user is logged in.");
+        } catch (err) {
+          setError(err.message); // Handle fetch errors
+        } finally {
+          setLoading(false); // Stop loading spinner
         }
-      } catch (err) {
-        setError(err.message); // Handle errors
-      } finally {
+      } else {
+        setError("No user is logged in."); // Handle user not found
         setLoading(false); // Stop loading spinner
       }
-    };
+    });
 
-    fetchUserData();
+    return () => unsubscribe(); // Cleanup listener on component unmount
   }, []);
 
   const formatDate = (isoString) => {
@@ -213,7 +213,7 @@ const Profile = () => {
     return date.toLocaleDateString(); // Extract and format only the date
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (
