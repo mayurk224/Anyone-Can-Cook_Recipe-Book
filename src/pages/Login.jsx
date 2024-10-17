@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { login } from "../firebase/auth"; // Importing login function from auth.js
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/HeaderLogo.png";
-import Video from "../assets/LoginPage.mp4";
+import { auth } from "../firebase/firebaseConfig";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,20 @@ const Login = () => {
     } catch (error) {
       setError("Failed to login. Please check your credentials.");
       console.error("Login Error:", error);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider(); // Initialize Google Provider
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // Get user info
+      const user = result.user;
+      console.log("User info:", user);
+      alert(`Welcome, ${user.displayName}!`);
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      alert(`Error: ${error.message}`);
     }
   };
 
@@ -134,6 +149,7 @@ const Login = () => {
                 <div className="flex justify-center">
                   <button
                     type="button"
+                    onClick={handleGoogleSignIn}
                     class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
                   >
                     <svg
