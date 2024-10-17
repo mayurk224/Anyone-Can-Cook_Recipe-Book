@@ -10,6 +10,7 @@ import {
   getFirestore,
 } from "firebase/firestore"; // Firestore operations
 import "../styles/FeaturedRecipes.css"; // Optional: Add any styles for featured recipes
+import Spinner from "../components/Spinner";
 
 const FeaturedRecipe = () => {
   const [recipes, setRecipes] = useState([]);
@@ -111,7 +112,7 @@ const FeaturedRecipe = () => {
   };
 
   if (loading) {
-    return <p>Loading featured recipes...</p>;
+    return <Spinner />;
   }
 
   return (

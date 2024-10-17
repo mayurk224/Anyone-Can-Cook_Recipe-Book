@@ -10,6 +10,7 @@ import {
 import { MdRestaurantMenu } from "react-icons/md";
 import { db } from "../firebase/firebaseConfig"; // Assuming Firebase setup is in place
 import { doc, getDoc } from "firebase/firestore";
+import Spinner from "../components/Spinner";
 
 const RecipeDetails = () => {
   const { id } = useParams(); // Get recipe ID from the URL
@@ -59,7 +60,7 @@ const RecipeDetails = () => {
   }, [id]);
 
   if (loading) {
-    return <p>Loading recipe...</p>;
+    return <Spinner />;
   }
 
   if (error) {
@@ -70,6 +71,36 @@ const RecipeDetails = () => {
     return <p>Recipe not found.</p>;
   }
 
+  const saveAsPDF = (name) => {
+    const element = document.body; // Select the part of the page to save (or a specific element)
+
+    const options = {
+      margin: 0.5,
+      filename: name,
+      image: { type: "jpg, jpeg, png", quality: 0.98 },
+      html2canvas: { scale: 2, logging: true, useCORS: true },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
+
+    // Generate PDF from the selected element
+    html2pdf()
+      .from(element)
+      .set(options)
+      .toPdf()
+      .get("pdf")
+      .then((pdf) => {
+        const pageHeight = pdf.internal.pageSize.height;
+        pdf.setTextColor(0, 0, 255); // Set link color to blue
+        pdf.textWithLink(
+          "View this recipe online",
+          2, // x-coordinate
+          pageHeight - 0.5, // y-coordinate (bottom of the page)
+          { url: window.location.href } // Current URL as link
+        );
+        pdf.save();
+      });
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <img
@@ -77,7 +108,20 @@ const RecipeDetails = () => {
         alt={recipe.name}
         className="w-full h-96 object-cover rounded-lg mb-6"
       />
-      <h1 className="text-4xl font-bold mb-4 text-gray-800">{recipe.name}</h1>
+      <div className="flex flex-col">
+        <a
+          href={window.location.href}
+          className="text-4xl font-bold mb-2 text-gray-800 no-underline"
+        >
+          {recipe.name}
+        </a>
+        <button
+          className="bg-purple-500 w-fit text-white font-bold py-2 px-4 rounded-full mb-3"
+          onClick={() => saveAsPDF(recipe.name)}
+        >
+          📄 Save as PDF
+        </button>
+      </div>
 
       {/* Conditionally display "Uploaded by" if the user was found */}
       {uploadedBy && (

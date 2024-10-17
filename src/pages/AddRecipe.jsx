@@ -133,7 +133,7 @@ const AddRecipe = () => {
     <div>
       <Header />
 
-      <div className="max-md:ml-5 max-md:my-5">
+      <div className="max-md:ml-5 max-md:my-5 ml-20 my-5">
         <DynamicBreadcrumb />
       </div>
       <form

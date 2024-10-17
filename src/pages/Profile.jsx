@@ -11,7 +11,7 @@ import {
   arrayUnion,
   getDoc,
 } from "firebase/firestore"; // Firestore functions
-import { db, storage } from "../firebase/firebaseConfig"; // Firebase configuration
+import { auth, db, storage } from "../firebase/firebaseConfig"; // Firebase configuration
 import Header from "../components/Header";
 import DynamicBreadcrumb from "../components/DynamicBreadcrumb";
 import RecipeCard from "../components/RecipeCard";
@@ -178,47 +178,88 @@ const Profile = () => {
     setActiveTab(tabName);
   };
 
+  const [userData, setUserData] = useState(null); // Store user data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = auth.currentUser; // Get current authenticated user
+
+        if (user) {
+          const userDoc = await getDoc(doc(db, "users", user.uid)); // Fetch user data from Firestore
+
+          if (userDoc.exists()) {
+            setUserData(userDoc.data()); // Store fetched data
+          } else {
+            throw new Error("User data not found.");
+          }
+        } else {
+          throw new Error("No user is logged in.");
+        }
+      } catch (err) {
+        setError(err.message); // Handle errors
+      } finally {
+        setLoading(false); // Stop loading spinner
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString); // Convert ISO string to Date object
+    return date.toLocaleDateString(); // Extract and format only the date
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div className="mx-4 md:mx-10 lg:mx-24">
       <Header />
       <div className="container mt-10 md:mt-24">
         <DynamicBreadcrumb />
         <div className="profileSection flex flex-col lg:flex-row rounded-xl bg-slate-500 w-full p-5 justify-between mt-8">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
+          <div className="flex md:flex-row gap-6 items-center">
             <div>
               <img
                 src="https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg?auto=compress&cs=tinysrgb&w=600"
                 alt="Profile"
-                className="rounded-full h-32 w-32 md:h-40 md:w-40 object-cover"
+                className="rounded-full h-24 w-24 md:h-40 md:w-40 object-cover"
               />
             </div>
-            <div className="space-y-1 text-center md:text-left">
+            <div className="space-y-1 md:text-left">
               <h1 className="text-3xl md:text-4xl font-semibold">
-                Mayur Kamble
+                {userData.displayName}
               </h1>
               <h3 className="font-medium text-base md:text-lg">
-                mayurkamble0250@gmail.com
+                {userData.email}
               </h3>
-              <p className="text-sm md:text-base">Joined At: 2022-01-01</p>
+              <p className="text-sm md:text-base font-medium">
+                Joined At: {formatDate(userData.createdAt)}
+              </p>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end gap-8 mt-6 lg:mt-0">
-            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-28 md:w-40">
-              <h2 className="text-xl md:text-2xl">Followers</h2>
-              <h2 className="text-xl md:text-2xl">20</h2>
+          <hr className="bg-slate-950 my-5" />
+          <div className="flex justify-center items-center lg:justify-end gap-8 lg:mt-0 lg:mr-10">
+            <div className="text-center">
+              <h3 className="text-xl font-medium lg:text-2xl">Following</h3>
+              <h2 className="text-2xl font-semibold lg:text-3xl">20</h2>
             </div>
-            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-28 md:w-40">
-              <h2 className="text-xl md:text-2xl">Following</h2>
-              <h2 className="text-xl md:text-2xl">20</h2>
+            <div className="text-center">
+              <h3 className="text-xl font-medium lg:text-2xl">Followers</h3>
+              <h2 className="text-2xl font-semibold lg:text-3xl">20</h2>
             </div>
-            <div className="text-center p-5 bg-slate-300 rounded-lg h-fit w-28 md:w-40">
-              <h2 className="text-xl md:text-2xl">Posts</h2>
-              <h2 className="text-xl md:text-2xl">20</h2>
+            <div className="text-center">
+              <h3 className="text-xl font-medium lg:text-2xl">Posts</h3>
+              <h2 className="text-2xl font-semibold lg:text-3xl">20</h2>
             </div>
           </div>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 max-[500px]:mt-5">
           <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul
               className="flex flex-wrap text-sm font-medium text-center"
@@ -280,6 +321,7 @@ const Profile = () => {
                       onDeleteRecipe={handleDeleteRecipe}
                       isFavorite={favorites.includes(recipe.id)}
                       onToggleFavorite={handleToggleFavorite}
+                      hideDelete={false}
                     />
                   ))}
                 </div>

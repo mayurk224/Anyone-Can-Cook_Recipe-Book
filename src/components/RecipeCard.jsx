@@ -8,6 +8,7 @@ const RecipeCard = ({
   onToggleFavorite,
   onDelete,
   size,
+  hideDelete='true',
 }) => {
   const location = useLocation(); // Get current route
   const navigate = useNavigate(); // For navigation
@@ -61,7 +62,7 @@ const RecipeCard = ({
       </button>
 
       {/* Delete Button - only visible on the profile page */}
-      {location.pathname === "/profile" && (
+      {!hideDelete && location.pathname === "/profile" && (
         <button
           className="bg-red-500 text-white font-bold py-2 px-4 rounded-full mt-3"
           onClick={(e) => {

@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore"; // Firestore operations
 import RecipeCard from "../components/RecipeCard"; // Adjust the path
 import Header from "../components/Header";
+import Spinner from "../components/Spinner";
 
 const AllRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -153,7 +154,7 @@ const AllRecipes = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Loading state
+    return <Spinner />; // Loading state
   }
 
   return (
