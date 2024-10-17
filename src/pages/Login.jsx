@@ -20,7 +20,7 @@ const Login = () => {
     try {
       await login(email, password); // Call login function from auth.js
       navigate("/"); // Redirect to home page on successful login
-      alert("login successful");
+      // alert("login successful");
     } catch (error) {
       setError("Failed to login. Please check your credentials.");
       console.error("Login Error:", error);
@@ -34,7 +34,7 @@ const Login = () => {
       // Get user info
       const user = result.user;
       console.log("User info:", user);
-      alert(`Welcome, ${user.displayName}!`);
+      // alert(`Welcome, ${user.displayName}!`);
     } catch (error) {
       console.error("Google sign-in error:", error);
       alert(`Error: ${error.message}`);
