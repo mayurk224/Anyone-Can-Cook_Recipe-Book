@@ -35,6 +35,7 @@ const Login = () => {
       const user = result.user;
       console.log("User info:", user);
       // alert(`Welcome, ${user.displayName}!`);
+      navigate("/"); // Redirect to home page on successful login
     } catch (error) {
       console.error("Google sign-in error:", error);
       alert(`Error: ${error.message}`);
