@@ -221,7 +221,7 @@ const Profile = () => {
       <Header />
       <div className="container mt-10 md:mt-24">
         <DynamicBreadcrumb />
-        <div className="profileSection flex flex-col lg:flex-row rounded-xl bg-slate-500 w-full p-5 justify-between mt-8">
+        <div className="profileSection flex flex-col lg:flex-row rounded-xl bg-red-100 w-full p-5 justify-between mt-8">
           <div className="flex md:flex-row gap-6 items-center">
             <div>
               <img
