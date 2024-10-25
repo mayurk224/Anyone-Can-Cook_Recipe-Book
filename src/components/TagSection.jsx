@@ -51,7 +51,7 @@ const TagSection = () => {
   return (
     <div className="tag-section px-4 sm:px-6 lg:px-8 my-8">
       <h2 className="text-md sm:text-lg font-bold mb-4 text-center">Tags</h2>
-      <div className="px-32 min-[425px]:px-2">
+      <div className="px-32 max-[425px]:px-2">
         <div className="flex flex-wrap justify-center gap-2">
           {displayedTags.map((tag, index) => (
             <span

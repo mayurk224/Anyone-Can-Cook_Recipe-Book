@@ -3,8 +3,10 @@ import { auth, db, storage } from "../firebase/firebaseConfig"; // Importing db 
 import {
   deleteUser,
   signOut,
-  reauthenticateWithCredential,
   EmailAuthProvider,
+  GoogleAuthProvider,
+  reauthenticateWithCredential,
+  reauthenticateWithPopup,
 } from "firebase/auth";
 import {
   collection,
@@ -16,6 +18,7 @@ import {
   writeBatch,
   arrayRemove,
   updateDoc,
+  getDoc,
 } from "firebase/firestore"; // Added arrayRemove and updateDoc
 import { ref, listAll, deleteObject } from "firebase/storage";
 
@@ -25,6 +28,7 @@ const AuthContext = createContext();
 // AuthProvider component
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Track loading state
 
   // Load user from localStorage
   useEffect(() => {
@@ -48,6 +52,7 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(null);
         localStorage.removeItem("currentUser");
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -64,30 +69,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Function to delete user account, recipes, and references from other users
-  const deleteAccount = async (password) => {
+  const deleteAccount = async (password = null) => {
     const user = auth.currentUser;
 
-    if (user) {
-      try {
-        // Reauthenticate the user
+    if (!user) return; // Return early if no user is logged in
+
+    try {
+      // Check if the user signed in with Google or email/password
+      if (
+        user.providerData.some(
+          (provider) => provider.providerId === "google.com"
+        )
+      ) {
+        // Reauthenticate using Google provider
+        const googleProvider = new GoogleAuthProvider();
+        await reauthenticateWithPopup(user, googleProvider);
+      } else if (password) {
+        // Reauthenticate using email and password
         const credential = EmailAuthProvider.credential(user.email, password);
         await reauthenticateWithCredential(user, credential);
-
-        // Proceed with deleting user data and account
-        await deleteUserRecipes(user.uid); // Delete user's recipes
-        await deleteUserFromCollection(user.uid); // Delete user from 'users' collection
-        await deleteUser(user); // Delete the user from Firebase Auth
-
-        // Clear state and localStorage on account deletion
-        setCurrentUser(null);
-        localStorage.removeItem("currentUser");
-
-        alert("Account successfully deleted.");
-      } catch (error) {
-        console.error("Error deleting user account:", error);
-        throw error; // Rethrow the error to be caught in the calling component
+      } else {
+        alert("Password is required for reauthentication.");
+        return;
       }
+
+      // Proceed with deleting user data and account
+      await deleteUserRecipes(user.uid); // Delete user's recipes
+      await deleteUserFromCollection(user.uid); // Remove user from 'users' collection
+      await deleteUser(user); // Delete the user from Firebase Auth
+
+      // Clear state and localStorage on account deletion
+      setCurrentUser(null);
+      localStorage.removeItem("currentUser");
+
+      alert("Account successfully deleted.");
+    } catch (error) {
+      console.error("Error deleting user account:", error);
+      alert("Failed to delete account. Please try again.");
+      throw error; // Rethrow the error to be handled in the calling component
     }
   };
 
@@ -168,8 +187,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, logout, deleteAccount }}>
-      {children} {/* This renders the wrapped components */}
+    <AuthContext.Provider
+      value={{ currentUser, logout, deleteAccount, loading }}
+    >
+      {!loading && children} {/* This renders the wrapped components */}
     </AuthContext.Provider>
   );
 };

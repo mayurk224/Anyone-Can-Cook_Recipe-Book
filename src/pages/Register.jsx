@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/HeaderLogo.png";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
+import { auth, db } from "../firebase/firebaseConfig";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -38,7 +38,6 @@ const Register = () => {
     }
   };
 
-
   const handleGoogleSignUp = async () => {
     const provider = new GoogleAuthProvider();
     setLoading(true); // Start loading spinner
@@ -58,10 +57,11 @@ const Register = () => {
           imageUrl: user.photoURL,
           email: user.email,
           createdAt: new Date().toISOString(),
+          
         });
 
-        console.log("User registered successfully:", user.displayName);
         alert(`Welcome, ${user.displayName}!`);
+        navigate("/");
       } else {
         console.log("User already exists:", user.displayName);
         alert(`Welcome back, ${user.displayName}!`);
