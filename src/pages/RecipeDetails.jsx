@@ -71,34 +71,8 @@ const RecipeDetails = () => {
     return <p>Recipe not found.</p>;
   }
 
-  const saveAsPDF = (name) => {
-    const element = document.body; // Select the part of the page to save (or a specific element)
-
-    const options = {
-      margin: 0.5,
-      filename: name,
-      image: { type: "jpg, jpeg, png", quality: 0.98 },
-      html2canvas: { scale: 2, logging: true, useCORS: true },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    };
-
-    // Generate PDF from the selected element
-    html2pdf()
-      .from(element)
-      .set(options)
-      .toPdf()
-      .get("pdf")
-      .then((pdf) => {
-        const pageHeight = pdf.internal.pageSize.height;
-        pdf.setTextColor(0, 0, 255); // Set link color to blue
-        pdf.textWithLink(
-          "View this recipe online",
-          2, // x-coordinate
-          pageHeight - 0.5, // y-coordinate (bottom of the page)
-          { url: window.location.href } // Current URL as link
-        );
-        pdf.save();
-      });
+  const handlePrint = () => {
+    window.print();
   };
 
   return (
@@ -116,10 +90,10 @@ const RecipeDetails = () => {
           {recipe.name}
         </a>
         <button
-          className="bg-purple-500 w-fit text-white font-bold py-2 px-4 rounded-full mb-3"
-          onClick={() => saveAsPDF(recipe.name)}
+          onClick={handlePrint}
+          className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 w-fit mb-3"
         >
-          📄 Save as PDF
+          🖨️ Print Page
         </button>
       </div>
 
