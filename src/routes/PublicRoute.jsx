@@ -1,17 +1,14 @@
-// PublicRoute.js
-import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // Assuming you're using AuthContext
+import { useAuth } from "../context/AuthContext"; // Adjust path if needed
 
-const PublicRoute = ({ children }) => {
-  const { currentUser } = useAuth();
+const PublicRoute = ({ element: Component }) => {
+  const { currentUser } = useAuth(); // Check user authentication
 
-  // If the user is logged in, redirect to home or any other protected page
   if (currentUser) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />; // Redirect to home if already authenticated
   }
 
-  return children; // Render the public component if user is not logged in
+  return Component; // Render the public component if not authenticated
 };
 
 export default PublicRoute;
