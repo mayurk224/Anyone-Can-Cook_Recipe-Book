@@ -1,105 +1,102 @@
+import axios from "axios";
 import React from "react";
 
 const ContactUs = () => {
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const sendEmail = async (to, subject, message) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/email/send",
+        {
+          to,
+          subject,
+          message,
+        }
+      );
+      alert("Email sent successfully!");
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent page refresh
+    await sendEmail(email, subject, message);
+  };
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div id="webcrumbs">
-        <div className="w-[800px] min-h-[600px] bg-neutral-50 shadow rounded-lg p-8">
-          <h1 className="text-4xl font-title mb-8 text-center">Contact Us</h1>
-
-          <div className="flex flex-wrap gap-8">
-            {/* Left section: Contact Information */}
-            <div className="w-[350px]">
-              <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
-              <p className="mb-6">
-                If you have any questions, feel free to reach out to us. We're
-                here to help!
-              </p>
-
-              <div className="mb-4">
-                <h3 className="font-bold">Email</h3>
-                <p>contact@ourwebsite.com</p>
-              </div>
-
-              <div className="mb-4">
-                <h3 className="font-bold">Phone</h3>
-                <p>+123 456 7890</p>
-              </div>
-
-              <div className="mb-4">
-                <h3 className="font-bold">Address</h3>
-                <p>123 Business St. Suite 456, City, Country</p>
-              </div>
-
-              <div className="flex gap-4 mt-6">
-                <a href="#" className="text-primary">
-                  <i className="fa-brands fa-facebook"></i>
-                </a>
-                <a href="#" className="text-primary">
-                  <i className="fa-brands fa-twitter"></i>
-                </a>
-                <a href="#" className="text-primary">
-                  <i className="fa-brands fa-linkedin"></i>
-                </a>
-              </div>
-            </div>
-
-            {/* Right section: Contact Form */}
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-4">Send Us a Message</h2>
-
-              <form className="space-y-4">
-                <div>
-                  <label className="block font-bold mb-1" htmlFor="name">
-                    Name
-                  </label>
-                  <input
-                    className="w-full p-2 border rounded-md"
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder="Your name"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-bold mb-1" htmlFor="email">
-                    Email
-                  </label>
-                  <input
-                    className="w-full p-2 border rounded-md"
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Your email"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-bold mb-1" htmlFor="message">
-                    Message
-                  </label>
-                  <textarea
-                    className="w-full p-2 border rounded-md"
-                    id="message"
-                    name="message"
-                    rows="6"
-                    placeholder="Your message"
-                  />
-                </div>
-
-                <button
-                  className="bg-primary text-white px-6 py-2 rounded-md"
-                  type="submit"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
+    <section class="bg-white dark:bg-gray-900">
+      <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
+          Contact Us
+        </h2>
+        <p class="mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl">
+          Got a technical issue? Want to send feedback about a beta feature?
+          Need details about our Business plan? Let us know.
+        </p>
+        <form onSubmit={handleSubmit} class="space-y-8">
+          <div>
+            <label
+              for="email"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Your email
+            </label>
+            <input
+              type="email"
+              id="email"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+              placeholder="name@flowbite.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
-        </div>
+          <div>
+            <label
+              for="subject"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Subject
+            </label>
+            <input
+              type="text"
+              id="subject"
+              class="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+              placeholder="Let us know how we can help you"
+              required
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+            />
+          </div>
+          <div class="sm:col-span-2">
+            <label
+              for="message"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
+            >
+              Your message
+            </label>
+            <textarea
+              id="message"
+              rows="6"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Leave a comment..."
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          >
+            Send message
+          </button>
+        </form>
       </div>
-    </div>
+    </section>
   );
 };
 
