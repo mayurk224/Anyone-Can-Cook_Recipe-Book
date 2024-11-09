@@ -3,7 +3,13 @@ import React, { useState } from "react";
 import { register } from "../firebase/auth"; // Import the register function from auth.js
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/HeaderLogo.png";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 
@@ -11,66 +17,102 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [displayName, setDisplayName] = useState(""); // New displayName state
+  const [displayName, setDisplayName] = useState(""); // New displayName
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+
+  // const handleRegister = async (e) => {
+
+  //   e.preventDefault();
+  //   setError(""); // Clear any previous errors
+
+  //   if (password !== confirmPassword) {
+  //     setError("Passwords do not match.");
+  //     return;
+  //   }
+
+  //   setLoading(true); // Set loading state
+
+  //   try {
+  //     await register(email, password, displayName); // Pass displayName to the register function
+  //     navigate("/"); // Redirect to home page after successful registration
+  //   } catch (error) {
+  //     setError("Failed to create account. Please try again.");
+  //     console.error("Registration Error:", error);
+  //   } finally {
+  //     setLoading(false); // Stop loading
+  //   }
+  // };
+
+  // const handleGoogleSignUp = async () => {
+  //   const provider = new GoogleAuthProvider();
+  //   setLoading(true); // Start loading spinner
+
+  //   try {
+  //     const result = await signInWithPopup(auth, provider); // Google sign-in popup
+  //     const user = result.user; // Extract user data
+
+  //     const userRef = doc(db, "users", user.uid); // Firestore reference
+
+  //     // Check if user already exists
+  //     const userDoc = await getDoc(userRef);
+  //     if (!userDoc.exists()) {
+  //       // Save new user to Firestore
+  //       await setDoc(userRef, {
+  //         displayName: user.displayName,
+  //         imageUrl: user.photoURL,
+  //         email: user.email,
+  //         createdAt: new Date().toISOString(),
+
+  //       });
+
+  //       alert(`Welcome, ${user.displayName}!`);
+  //       navigate("/");
+  //     } else {
+  //       console.log("User already exists:", user.displayName);
+  //       alert(`Welcome back, ${user.displayName}!`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Google Sign-Up Error:", error);
+  //     alert(`Error: ${error.message}`);
+  //   } finally {
+  //     setLoading(false); // Stop loading spinner
+  //   }
+  // };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError(""); // Clear any previous errors
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      console.error("Passwords do not match");
       return;
     }
 
-    setLoading(true); // Set loading state
-
     try {
-      await register(email, password, displayName); // Pass displayName to the register function
-      navigate("/"); // Redirect to home page after successful registration
-    } catch (error) {
-      setError("Failed to create account. Please try again.");
-      console.error("Registration Error:", error);
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  };
+      // Register user with email and password
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
 
-  const handleGoogleSignUp = async () => {
-    const provider = new GoogleAuthProvider();
-    setLoading(true); // Start loading spinner
+      // Update the user's profile with the displayName
+      await updateProfile(user, {
+        displayName: displayName,
+      });
 
-    try {
-      const result = await signInWithPopup(auth, provider); // Google sign-in popup
-      const user = result.user; // Extract user data
-
-      const userRef = doc(db, "users", user.uid); // Firestore reference
-
-      // Check if user already exists
-      const userDoc = await getDoc(userRef);
-      if (!userDoc.exists()) {
-        // Save new user to Firestore
-        await setDoc(userRef, {
-          displayName: user.displayName,
-          imageUrl: user.photoURL,
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
           email: user.email,
+          displayName: user.displayName,
           createdAt: new Date().toISOString(),
-          
         });
-
-        alert(`Welcome, ${user.displayName}!`);
-        navigate("/");
-      } else {
-        console.log("User already exists:", user.displayName);
-        alert(`Welcome back, ${user.displayName}!`);
       }
+
+      alert("Updated");
     } catch (error) {
-      console.error("Google Sign-Up Error:", error);
-      alert(`Error: ${error.message}`);
-    } finally {
-      setLoading(false); // Stop loading spinner
+      console.error("Registration Error:", error);
     }
   };
 
@@ -205,7 +247,7 @@ const Register = () => {
                   </span>
                 </div>
                 <div className="flex justify-center">
-                  <button
+                  {/* <button
                     type="button"
                     onClick={handleGoogleSignUp}
                     className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
@@ -231,7 +273,7 @@ const Register = () => {
                         Sign Up with Google
                       </>
                     )}
-                  </button>
+                  </button> */}
                 </div>
               </form>
               <p class="text-sm font-light text-gray-500 dark:text-gray-400">

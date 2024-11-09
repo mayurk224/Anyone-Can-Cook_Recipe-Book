@@ -82,7 +82,7 @@ const RecipeDetails = () => {
         alt={recipe.name}
         className="w-full h-96 object-cover rounded-lg mb-6"
       />
-      <div className="flex flex-col">
+      <div className="flex justify-between items-center">
         <a
           href={window.location.href}
           className="text-4xl font-bold mb-2 text-gray-800 no-underline"

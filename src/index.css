@@ -6,6 +6,9 @@ body{
     background-color: #fdf1f1;
 }
 
+html {
+  scroll-behavior: smooth;
+}
 
 *,
 :after,

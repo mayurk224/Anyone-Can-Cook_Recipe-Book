@@ -13,6 +13,7 @@ import {
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Header from "../components/Header";
 import DynamicBreadcrumb from "../components/DynamicBreadcrumb";
+import { useNavigate } from "react-router-dom";
 
 const AddRecipe = () => {
   const { currentUser } = useAuth(); // Get the current user from AuthContext
@@ -47,6 +48,7 @@ const AddRecipe = () => {
       setSelectedImage(URL.createObjectURL(file));
     }
   };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,6 +100,7 @@ const AddRecipe = () => {
               recipes: arrayUnion(newRecipeRef.id),
             });
             alert("Recipe added successfully with image!");
+            navigate("/profile");
           }
         );
       } else {

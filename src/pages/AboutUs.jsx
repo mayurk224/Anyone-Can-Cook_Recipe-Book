@@ -2,66 +2,89 @@ import React from "react";
 
 const AboutUs = () => {
   return (
-    <div className="flex justify-center">
-      <div id="webcrumbs">
-        <div className="w-[800px] min-h-[600px] bg-neutral-50 shadow-lg rounded-lg p-8">
-          <header className="mb-6 text-center">
-            <h1 className="text-4xl font-title text-primary">About Us</h1>
-          </header>
+    <section className="bg-gray-50 dark:bg-gray-900 py-16 px-8">
+      <div className="container mx-auto text-center">
+        <h1 className="text-4xl font-extrabold text-gray-800 dark:text-white mb-6">
+          About Us
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          Welcome to <span className="font-bold">Anyone Can Cook</span>! This is
+          a community-driven platform where food enthusiasts can share and
+          discover amazing recipes from around the world. Whether you're a
+          beginner or a seasoned chef, you'll find something delicious to try.
+        </p>
+        <div className="text-left max-w-3xl mx-auto">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+            Features of Our Website:
+          </h2>
+          <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-6">
+            <li>
+              🔐 **User Authentication**: Secure login and registration using
+              Firebase.
+            </li>
+            <li>
+              ⭐ **Favorites**: Save your favorite recipes for easy access.
+            </li>
+            <li>
+              📋 **Recipe Management**: Upload, edit, and delete your personal
+              recipes.
+            </li>
+            <li>
+              📄 **Download as PDF**: Save recipes offline by downloading them
+              as PDF.
+            </li>
+            <li>
+              🌍 **Pre-built Recipes**: Browse pre-built recipes fetched from
+              external APIs.
+            </li>
+            <li>
+              🔍 **Google OAuth**: Sign up and log in easily using your Google
+              account.
+            </li>
+          </ul>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Our Story</h2>
-            <p className="text-lg">
-              Welcome to RecipeBook, your trusted companion in the kitchen. We
-              started with a passion for cooking and a desire to make home
-              cooking easy, enjoyable, and delicious for everyone.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
-            <p className="text-lg">
-              At RecipeBook, we believe that cooking should be fun, accessible,
-              and rewarding. Our mission is to inspire home cooks by providing a
-              wide variety of delicious, easy-to-follow recipes from all
-              cuisines of the world.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">What We Offer</h2>
-            <ul className="list-disc ml-5 text-lg">
-              <li className="mb-2">
-                Step-by-step recipes tested by professionals.
-              </li>
-              <li className="mb-2">
-                Nutrition facts and tips for healthy eating.
-              </li>
-              <li className="mb-2">Curated meal plans and weekly specials.</li>
-              <li className="mb-2">
-                A community of cooking enthusiasts to share your experiences
-                with.
-              </li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Follow Us</h2>
-            <div className="flex flex-wrap gap-4">
-              <a href="#" className="text-primary">
-                <i className="fa-brands fa-facebook w-[40px] h-[40px]"></i>
-              </a>
-              <a href="#" className="text-primary">
-                <i className="fa-brands fa-instagram w-[40px] h-[40px]"></i>
-              </a>
-              <a href="#" className="text-primary">
-                <i className="fa-brands fa-twitter w-[40px] h-[40px]"></i>
-              </a>
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+            Meet the Creator
+          </h2>
+          <div className="flex items-center space-x-4 mb-8">
+            <img
+              src="https://via.placeholder.com/100"
+              alt="Owner"
+              className="w-24 h-24 rounded-full border-2 border-blue-500"
+            />
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                Mayur Dilip Kamble
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Hi, I'm Mayur, the creator of{" "}
+                <span className="font-bold">Anyone Can Cook</span>. I’m a
+                passionate web developer with a love for food. This project
+                combines my interest in coding and culinary arts to help others
+                explore and share their cooking adventures. Let's make cooking
+                fun and accessible to everyone!
+              </p>
             </div>
-          </section>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+            Connect with Us
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            Have any questions or feedback? Feel free to reach out. We're here
+            to help!
+          </p>
+          <a
+            href="mailto:mayurkamble0250@gmail.com"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+          >
+            Contact Us
+          </a>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

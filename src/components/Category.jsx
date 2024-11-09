@@ -39,7 +39,7 @@ const Category = () => {
   };
 
   return (
-    <div className="mt-8">
+    <div className="pt-14" id="category">
       {/* Title */}
       <div className="flex items-center justify-center">
         <h1 className="text-3xl md:text-4xl cursor-default font-semibold text-center py-10">

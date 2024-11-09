@@ -29,6 +29,20 @@ const Profile = () => {
   const [favorites, setFavorites] = useState([]); // State to manage user's favorites
   const [favoriteRecipes, setFavoriteRecipes] = useState([]); // State to store fetched favorite recipes
   const { currentUser, deleteAccount } = useAuth(); // Get the logged-in user (assuming you're using Firebase Auth)
+  const [userDetails, setUserDetails] = useState(null); // State to store user details
+
+  const fetchUserData = async () => {
+    auth.onAuthStateChanged(async (user) => {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setUserDetails(docSnap.data());
+        console.log("Document data:", docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
+    });
+  };
 
   useEffect(() => {
     const fetchUserRecipes = async () => {
@@ -81,6 +95,7 @@ const Profile = () => {
     };
 
     fetchUserRecipes();
+    fetchUserData();
   }, [currentUser]);
 
   // Handle toggle favorite functionality
@@ -222,7 +237,7 @@ const Profile = () => {
   if (error) return <p>Error: {error}</p>;
 
   const handleDeleteAccount = async () => {
-    await deleteAccount(); // No password needed for Google reauthentication
+    await deleteAccount(password); // No password needed for Google reauthentication
   };
   return (
     <div>
@@ -371,7 +386,7 @@ const Profile = () => {
                   Once you delete your account, there is no going back. Please
                   be certain.
                 </p>
-
+                <input type="password" name="password" id="password" />
                 <button
                   type="button"
                   onClick={handleDeleteAccount}

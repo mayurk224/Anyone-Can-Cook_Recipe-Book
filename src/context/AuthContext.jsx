@@ -19,7 +19,7 @@ import {
   arrayRemove,
   updateDoc,
   getDoc,
-} from "firebase/firestore"; // Added arrayRemove and updateDoc
+} from "firebase/firestore";
 import { ref, listAll, deleteObject } from "firebase/storage";
 
 // Create AuthContext
@@ -62,7 +62,6 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await signOut(auth);
-      // Clear localStorage on logout
       localStorage.removeItem("currentUser");
     } catch (error) {
       console.error("Error logging out:", error);

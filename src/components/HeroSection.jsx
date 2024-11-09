@@ -8,7 +8,7 @@ const HeroSection = () => {
         backgroundImage: `url('https://images.pexels.com/photos/4551832/pexels-photo-4551832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "100vh",
+        height: "80vh",
         width: "100%",
       }}
     >
@@ -20,9 +20,9 @@ const HeroSection = () => {
           Experience the magic of cooking with our recipes, tips, and
           inspiration.
         </p>
-        <button className="px-8 py-3 rounded-full text-lg font-semibold w-fit text-white bg-black hover:bg-gray-800">
+        <a href="#category" className="px-8 py-3 rounded-full text-lg font-semibold w-fit text-white bg-black hover:bg-gray-800">
           Get Started
-        </button>
+        </a>
       </div>
     </div>
   );
